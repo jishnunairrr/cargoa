@@ -50,13 +50,15 @@ document.querySelectorAll('.board-sec').forEach((sec) => {
   if (!dlg || typeof dlg.showModal !== 'function') return;
   const carEl = dlg.querySelector('.dlg-car');
   const waEl = dlg.querySelector('.dlg-wa');
+  const waDefault = waEl.href;
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[data-book]');
     if (!a) return;
     e.preventDefault();
     const car = a.dataset.book;
     carEl.textContent = car ? 'the ' + car : 'a car';
-    waEl.href = a.href; // already carries the right pre-filled message
+    // Book buttons carry a pre-filled WhatsApp message; "Call us" buttons link to a phone number instead
+    waEl.href = a.href.startsWith('https://wa.me/') ? a.href : waDefault;
     dlg.showModal();
     waEl.focus();
   });
